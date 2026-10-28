@@ -1,0 +1,415 @@
+@import url('https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600;700&family=Mulish:wght@300;400;600;700&display=swap');
+
+/* NOTE on fonts: the real site uses licensed Adobe fonts "Futura LT" (headings) and
+   "Avenir LT Light" (body) via Wix/Typekit. Those aren't freely embeddable, so this
+   uses the closest free equivalents: Jost (geometric, Futura-alike) for headings and
+   Mulish (humanist, Avenir-alike) for body text. Swap the @import + font-family below
+   if you get a license for the originals. */
+
+:root{
+  /* exact colors sampled from the live site */
+  --blue:#B6D1D9;      /* hero band / nekklachten card */
+  --green:#D5E1CA;     /* hoofdpijn card / over mij panel */
+  --peach:#E5C7B5;     /* rugklachten card */
+  --gray-bg:#F0EDED;   /* overige klachten card */
+  --pale-blue:#E8EFF1; /* behandelmethodes header band */
+  --pink:#FADCD6;      /* mijn visie panel */
+  --whatsapp-green:#20CE88;
+  --muted:#899DA3;     /* inactive nav item */
+  --footer-gray:#6E6E6D;
+  --text:#000000;
+  --bg:#ffffff;
+  --logo-orange:#CC7A30;
+  --max-w:1200px;
+}
+
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+
+body{
+  font-family:'Mulish',sans-serif;
+  font-weight:300;
+  color:var(--text);
+  background:var(--bg);
+  line-height:1.7;
+  font-size:15px;
+  overflow-x:hidden;
+}
+
+/* ---------- Loading splash: shown briefly on first load, like the real site ----------
+   Matches the real site's sequence: green panel appears, logo fades/scales in,
+   holds, fades back out, then the panel itself closes like a curtain — shrinking
+   horizontally from both edges in to a centre line — before it's removed. */
+#splash{
+  position:fixed;inset:0;z-index:9999;
+  background:var(--green);
+  display:flex;align-items:center;justify-content:center;
+  transform:scaleX(1);
+  transform-origin:center;
+  transition:transform .5s cubic-bezier(.65,0,.35,1);
+}
+#splash-logo{
+  width:110px;height:auto;
+  opacity:0;
+  transform:scale(.9);
+  transition:opacity .5s ease, transform .5s ease;
+}
+#splash.splash-logo-in #splash-logo{opacity:1;transform:scale(1);}
+#splash.splash-hide #splash-logo{opacity:0;transform:scale(.9);transition:opacity .25s ease, transform .25s ease;}
+#splash.splash-close{transform:scaleX(0);pointer-events:none;}
+@media (prefers-reduced-motion: reduce){
+  #splash,#splash-logo{transition:none;}
+}
+
+h1,h2,h3,h4,h5,h6{
+  font-family:'Jost',sans-serif;
+  color:var(--text);
+  font-weight:600;
+  line-height:1.15;
+}
+
+p{margin-bottom:1em;}
+a{color:inherit;text-decoration:none;}
+img{max-width:100%;height:auto;display:block;}
+.container{max-width:var(--max-w);margin:0 auto;padding:0 32px;}
+
+/* ---------- Content swap: only #page-content swipes, header/footer never do ----------
+   Real swipe, matching the live site: the new page slides in from the right
+   while a snapshot of the old page slides out to the left. #page-content is
+   the stable positioning frame (header/footer never move); during a swap it
+   briefly holds two layers — the incoming page (.page-enter) in normal flow
+   and a snapshot of the outgoing page (.page-exit) absolutely overlaid on
+   top of it — and animates its own height to the incoming page's height at
+   the same time, so nothing jumps once the layers are unwrapped afterwards. */
+#page-content{position:relative;}
+#page-content.page-content-animating{overflow:hidden;transition:height .6s cubic-bezier(.83,0,.17,1);}
+.page-enter,.page-exit{width:100%;}
+.page-exit{position:absolute;top:0;left:0;animation:bf-slide-out .6s cubic-bezier(.83,0,.17,1) forwards;}
+.page-enter{animation:bf-slide-in .6s cubic-bezier(.83,0,.17,1) forwards;}
+@keyframes bf-slide-out{
+  0%{transform:translateX(0);opacity:1;}
+  80%{opacity:1;}
+  100%{transform:translateX(-100%);opacity:0;}
+}
+@keyframes bf-slide-in{
+  0%{transform:translateX(100%);}
+  100%{transform:translateX(0);}
+}
+@media (prefers-reduced-motion: reduce){
+  #page-content.page-content-animating{transition:none;}
+  .page-enter,.page-exit{animation:none;}
+}
+
+/* ---------- Header ---------- */
+header.site-header{background:var(--gray-bg);position:relative;z-index:100;}
+.nav-wrap{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:24px;
+  padding:18px 32px 8px;
+  max-width:var(--max-w);
+  margin:0 auto;
+}
+.brand{display:flex;align-items:center;gap:4px;}
+.brand .logo-img{height:117px;width:auto;}
+
+nav.main-nav{flex:1;min-width:0;margin-left:32px;}
+nav.main-nav > ul{list-style:none;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;width:100%;}
+nav.main-nav > ul > li{position:relative;}
+nav.main-nav a{font-size:.95rem;font-weight:400;color:var(--text);}
+nav.main-nav a.active{color:var(--muted);}
+.nav-trigger{font-size:.95rem;font-weight:400;color:var(--text);cursor:pointer;display:inline-block;}
+.nav-trigger.active{color:var(--muted);}
+.has-sub > ul{
+  display:none;position:absolute;top:100%;left:0;background:var(--gray-bg);
+  padding:10px 0;min-width:200px;box-shadow:0 6px 18px rgba(0,0,0,.08);z-index:50;
+  list-style:none;margin:0;
+}
+.has-sub:hover > ul, .has-sub.open > ul{display:block;}
+.has-sub > ul li a{display:block;padding:6px 18px;white-space:nowrap;font-size:.9rem;}
+.has-sub > ul li a:hover{color:var(--whatsapp-green);}
+
+.whatsapp-row{text-align:center;padding-bottom:14px;}
+.whatsapp-btn{
+  display:inline-block;
+  border:2px solid var(--whatsapp-green);
+  color:var(--whatsapp-green);
+  border-radius:8px;
+  padding:6px 22px;
+  font-size:.9rem;
+  font-weight:400;
+}
+
+.menu-toggle{display:none;background:none;border:none;font-size:1.6rem;color:var(--text);cursor:pointer;}
+.lang-toggle{font-size:1.3rem;line-height:1;text-decoration:none;display:inline-flex;align-items:center;opacity:.85;transition:opacity .2s;}
+.lang-toggle:hover{opacity:1;}
+.mobile-whatsapp{display:none;}
+.quick-fab{
+  display:flex;
+  position:fixed;right:20px;bottom:20px;z-index:200;
+  width:42px;height:42px;border-radius:50%;
+  background:var(--logo-orange);color:#fff;
+  align-items:center;justify-content:center;
+  box-shadow:0 4px 14px rgba(0,0,0,.25);
+  border:none;cursor:pointer;padding:0;
+  opacity:0;transform:translateY(10px);pointer-events:none;
+  transition:opacity .25s ease, transform .25s ease;
+}
+.quick-fab.show{opacity:1;transform:translateY(0);pointer-events:auto;}
+.quick-fab svg{width:18px;height:18px;}
+@media (prefers-reduced-motion: reduce){ .quick-fab{transition:none;} }
+
+/* ---------- Hero ---------- */
+.hero-band{
+  background:var(--blue);position:relative;overflow:hidden;
+  text-align:center;padding:40px 20px 48px;
+}
+.hero-band::before{content:"";position:absolute;top:0;left:0;right:0;height:83.8px;background:var(--gray-bg);}
+.hero-band h1{position:relative;z-index:1;font-size:4.2rem;letter-spacing:-1px;margin:0;}
+.hero-band h1 .bold{font-weight:700;}
+.hero-band h1 .light{font-weight:300;}
+@media(max-width:600px){
+  .hero-band{padding:24px 20px 40px;}
+  .hero-band::before{height:52.9px;}
+  .hero-band h1{font-size:2.8rem;}
+}
+
+/* ---------- Full-bleed 4-column band rows ---------- */
+.band-row{display:flex;flex-wrap:wrap;}
+.band-col{
+  position:relative;
+  flex:1 1 25%;
+  min-width:260px;
+  padding:56px 32px 64px;
+  text-align:center;
+}
+.band-col.c-green{background:var(--green);}
+.band-col.c-blue{background:var(--blue);}
+.band-col.c-peach{background:var(--peach);}
+.band-col.c-gray{background:var(--gray-bg);}
+
+/* purely decorative 1px bleed strips (position:absolute, no layout impact,
+   nothing else moves) that paint over any hairline seam a browser's
+   sub-pixel/device-pixel rounding can leave between two stacked full-bleed
+   colour blocks. z-index lifts them above the next block in paint order. */
+.band-col::before,.band-col::after{content:"";position:absolute;left:0;right:0;height:4px;z-index:3;background:inherit;}
+.band-col::before{top:-2px;}
+.band-col::after{bottom:-2px;}
+
+.band-col img.icon{max-width:150px;margin:0 auto 24px;}
+.band-col h3{font-size:1.9rem;font-weight:400;margin-bottom:18px;}
+.band-col p{font-size:.9375rem;max-width:280px;margin:0 auto 22px;}
+.band-col .more{font-size:.85rem;text-decoration:underline;text-underline-offset:2px;}
+
+/* fade+rise in as icons/headings scroll into view (matches the live site) */
+.reveal-icon,.reveal-title{opacity:0;transform:translateY(18px);transition:opacity .8s ease, transform .8s ease;}
+.reveal-icon.in{opacity:1;transform:translateY(0);}
+.reveal-title.in{opacity:1;transform:translateY(0);transition-delay:.15s;}
+/* zoom-in reveal: starts large and settles down to full size (used for the
+   logo under the specialisations list on the Over mij page) */
+.reveal-zoom{opacity:0;transform:scale(1.8);transition:opacity .8s ease, transform .8s ease;}
+.reveal-zoom.in{opacity:1;transform:scale(1);}
+@media (prefers-reduced-motion: reduce){
+  .reveal-icon,.reveal-title,.reveal-zoom{opacity:1;transform:none;transition:none;}
+}
+
+/* behandelmethodes header band */
+.section-band-title{position:relative;background:var(--pale-blue);text-align:center;padding:56px 20px;}
+.section-band-title h2{font-size:2.6rem;font-weight:400;}
+.section-band-title::before,.section-band-title::after{content:"";position:absolute;left:0;right:0;height:4px;z-index:3;background:inherit;}
+.section-band-title::before{top:-2px;}
+.section-band-title::after{bottom:-2px;}
+
+/* ---------- 3-col visie / photo / over-mij split ---------- */
+.split-3{display:flex;flex-wrap:wrap;}
+.split-3 .panel{flex:1 1 30%;min-width:280px;padding:64px 40px;text-align:center;}
+.split-3 .panel.peach{background:var(--pink);}
+.split-3 .panel.green{background:var(--green);}
+.split-3 .photo{flex:1 1 34%;min-width:280px;}
+.split-3 .photo img{width:100%;height:100%;object-fit:cover;min-height:420px;filter:grayscale(1);}
+.split-3 h2{font-weight:400;font-size:2rem;margin-bottom:20px;}
+.split-3 p{font-size:.92rem;margin-bottom:1em;}
+.split-3 .more{font-size:.9rem;text-decoration:underline;text-underline-offset:2px;display:inline-block;margin-top:12px;}
+
+/* ---------- Sub-page title band (breadcrumb style) ---------- */
+.title-band{
+  background:var(--blue);position:relative;overflow:hidden;
+  text-align:center;padding:24px 20px 56px;
+}
+.title-band::before{content:"";position:absolute;top:0;left:0;right:0;height:52px;background:var(--gray-bg);}
+.title-band h1{position:relative;z-index:1;font-size:2.4rem;font-weight:400;line-height:1.15;margin:0;}
+@media(max-width:600px){
+  .title-band{padding:16px 20px 40px;}
+  .title-band::before{height:35px;}
+  .title-band h1{font-size:1.9rem;}
+}
+
+.content-band{padding:56px 32px;}
+.content-band.c-blue{background:var(--blue);}
+.content-band.c-green{background:var(--green);}
+.content-band.c-peach{background:var(--peach);}
+.content-band.c-pale{background:var(--pale-blue);}
+.content-band.c-white{background:#fff;}
+
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;max-width:800px;margin:0 auto;}
+.two-col p{font-size:.95rem;}
+@media(max-width:800px){.two-col{grid-template-columns:1fr;}}
+
+.plain-section{max-width:800px;margin:0 auto;padding:48px 32px;}
+.plain-section.plain-blue{max-width:none;background:var(--blue);margin:0;padding:0 32px 56px;}
+.plain-section.plain-blue > *{max-width:800px;margin-left:auto;margin-right:auto;}
+.plain-section h2{font-size:1.6rem;font-weight:500;margin:1.2em 0 .5em;}
+.plain-section h3{font-size:1.2rem;font-weight:500;margin:1.2em 0 .4em;}
+.plain-section p{font-size:.95rem;}
+
+/* Centred text column inside a content-band, matching .plain-section's width;
+   used on pages like nekklachten/rugklachten for the intro article. */
+.band-article{max-width:800px;margin:0 auto;}
+.band-article p{font-size:.95rem;}
+.img-row{display:flex;gap:20px;flex-wrap:wrap;justify-content:center;margin:24px 0;}
+.img-row img{max-width:100%;}
+.plain-section img{margin:16px auto;}
+
+/* link list (overige klachten) */
+.link-list{columns:2;column-gap:40px;max-width:700px;margin:24px auto;text-align:left;}
+.link-list a{display:block;padding:6px 0;text-decoration:underline;font-size:.92rem;}
+@media(max-width:600px){.link-list{columns:1;}}
+
+/* pricing table */
+table.tarieven{width:100%;max-width:640px;margin:24px auto;border-collapse:collapse;}
+table.tarieven td{padding:10px 4px;border-bottom:1px solid rgba(0,0,0,.15);font-size:.92rem;}
+table.tarieven td:last-child{text-align:right;font-weight:600;}
+.insurer-list{max-width:640px;margin:16px auto;font-size:.92rem;text-align:left;}
+.insurer-list li{margin-bottom:4px;}
+
+/* blog */
+.blog-grid{display:flex;flex-wrap:wrap;gap:0;}
+.blog-post{flex:1 1 50%;min-width:300px;padding:32px;border-bottom:1px solid #eee;}
+.blog-post img{width:100%;max-width:340px;margin-bottom:16px;}
+.blog-post h3{font-size:1.2rem;font-weight:400;margin-bottom:8px;}
+.blog-post .meta{font-size:.8rem;color:var(--muted);margin-top:8px;}
+@media(max-width:600px){
+  /* min-width:300px above can exceed the available width on narrow phones,
+     eating into the content-band's own side padding and throwing the column
+     off-centre — let posts shrink to fit instead. */
+  .blog-post{min-width:0;flex-basis:100%;padding:24px 0;}
+}
+
+/* ---------- Footer ---------- */
+footer.site-footer{background:#fff;padding:48px 0 0;}
+.footer-grid{
+  display:grid;
+  grid-template-columns:1fr 1.1fr 1.1fr;
+  gap:40px;
+  max-width:var(--max-w);
+  margin:0 auto;
+  padding:0 32px 40px;
+}
+@media(max-width:860px){.footer-grid{grid-template-columns:1fr;}}
+.footer-col p{font-size:.92rem;margin-bottom:.3em;}
+.footer-col .socials{display:flex;align-items:center;gap:10px;margin:14px 0;flex-wrap:wrap;}
+.footer-col .socials img{width:30px;height:30px;}
+.footer-col .hours{margin-top:16px;font-size:.92rem;}
+
+.map-embed iframe{width:100%;height:220px;border:0;filter:grayscale(.15);}
+
+form.contact-form{display:grid;grid-template-columns:1fr 1fr;gap:22px 24px;}
+form.contact-form .hp-field{position:absolute;left:-9999px;}
+form.contact-form .full{grid-column:1 / -1;}
+form.contact-form label{display:block;font-size:.85rem;margin-bottom:6px;color:var(--text);}
+form.contact-form input, form.contact-form textarea{
+  width:100%;border:none;border-bottom:1px solid #000;
+  padding:6px 2px;font-family:inherit;font-size:.9rem;background:transparent;
+}
+form.contact-form input:focus, form.contact-form textarea:focus{outline:none;border-bottom:1.5px solid var(--whatsapp-green);}
+form.contact-form button{
+  grid-column:1 / -1;
+  justify-self:center;
+  background:none;border:none;
+  font-family:'Mulish',sans-serif;font-size:.95rem;text-decoration:underline;
+  cursor:pointer;margin-top:8px;
+}
+
+.copyright-bar{background:var(--gray-bg);text-align:center;padding:14px;margin-top:40px;}
+.copyright-bar span{color:var(--footer-gray);font-size:.85rem;}
+
+@media(max-width:860px){
+  /* Mobile header: every top-row element is independently pinned (not sharing
+     one flex row), so nothing can ever overlap regardless of logo width or
+     screen size — WhatsApp sits small top-left, the logo centred a little
+     lower, and the flag sits directly above the hamburger, top-right. */
+  .nav-wrap{
+    position:relative;min-height:134px;
+    padding:12px 20px 8px;
+  }
+  .mobile-whatsapp{
+    display:inline-block;position:absolute;top:14px;left:20px;z-index:3;
+    padding:4px 10px;font-size:.72rem;
+  }
+  .whatsapp-row{display:none;}
+  .brand{
+    position:absolute;left:50%;top:60%;z-index:1;
+    transform:translate(-50%,-50%);
+  }
+  .brand .logo-img{height:80px;margin:0 auto;}
+  .lang-toggle{
+    position:absolute;top:10px;right:20px;z-index:3;
+    font-size:1.05rem;
+  }
+  .menu-toggle{
+    position:absolute;top:40px;right:20px;z-index:3;
+    display:flex;align-items:center;justify-content:center;
+    width:38px;height:38px;border:1.5px solid #ddd;border-radius:9px;
+    color:var(--logo-orange);
+  }
+  .menu-toggle svg{width:18px;height:13px;display:block;}
+  nav.main-nav{display:none;}
+  nav.main-nav.open{
+    display:block;position:relative;z-index:2;
+    background:var(--gray-bg);
+  }
+  nav.main-nav > ul{flex-direction:column;align-items:flex-start;gap:4px;padding:140px 20px 16px;}
+  .has-sub > ul{position:static;box-shadow:none;background:transparent;padding-left:14px;}
+}
+
+/* ---------- Thank-you page: message-snapshot reveal ----------
+   A plain little "snapshot" of the submitted message (just soft grey bars
+   standing in for the filled-in name/email/phone/message lines — no
+   border, no envelope) flutters smoothly up and away. Then the message
+   card appears. */
+.thanks-stage{min-height:200px;display:flex;align-items:center;justify-content:center;padding:24px 0;}
+.msg-snapshot{
+  position:relative;width:132px;padding:16px 18px;
+  background:#fff;border-radius:6px;box-shadow:0 3px 14px rgba(0,0,0,.1);
+  transition:transform .9s cubic-bezier(.3,0,.2,1), opacity .9s ease;
+}
+.msg-snapshot.fly{transform:translate(70px,-230px) rotate(9deg);opacity:0;}
+.msg-line{display:block;height:6px;border-radius:3px;background:rgba(0,0,0,.09);margin-bottom:9px;}
+.msg-line:last-child{margin-bottom:0;}
+.msg-line-name{width:55%;}
+.msg-line-email{width:78%;}
+.msg-line-phone{width:38%;}
+.msg-line-text{width:100%;}
+.msg-line-text2{width:62%;}
+.thanks-overlay{
+  position:fixed;inset:0;background:rgba(20,20,18,.4);
+  display:flex;align-items:center;justify-content:center;padding:24px;
+  opacity:0;pointer-events:none;transition:opacity .35s ease;z-index:500;
+}
+.thanks-overlay.show{opacity:1;pointer-events:auto;}
+.thanks-card{
+  background:#fff;border-radius:14px;padding:44px 36px;max-width:380px;width:100%;
+  text-align:center;box-shadow:10px 10px 0 rgba(0,0,0,.14);
+  transform:scale(.3);opacity:0;
+  transition:transform .5s cubic-bezier(.34,1.56,.64,1), opacity .4s ease;
+}
+.thanks-overlay.show .thanks-card{transform:scale(1);opacity:1;}
+.thanks-card p{margin-bottom:24px;}
+.thanks-card .thanks-logo{display:inline-block;cursor:pointer;}
+.thanks-card .thanks-logo img{max-width:72px;margin:0 auto;}
+@media (prefers-reduced-motion: reduce){
+  .msg-snapshot{transition:none;}
+  .thanks-overlay{transition:none;}
+  .thanks-card{transition:none;}
+}

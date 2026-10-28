@@ -1,0 +1,9 @@
+[build]
+  publish = "."
+
+# Pretty URLs (serving hoofdpijn.html at /hoofdpijn) are on by default on Netlify.
+# Only a real, non-existent path falls through to this 404 page.
+[[redirects]]
+  from = "/*"
+  to = "/404.html"
+  status = 404

@@ -1,0 +1,23 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "backfysio-local",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "8934"],
+      "port": 8934
+    },
+    {
+      "name": "backfysio-pretty",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["/private/tmp/claude-501/-Users-wonneback-Dropbox-Prive-BackFysio-website-backfysio-site/772c20db-6479-44cb-a701-da67aed613a2/scratchpad/pretty_server.py", "8935"],
+      "port": 8935
+    },
+    {
+      "name": "backfysio-fresh",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "8936"],
+      "port": 8936
+    }
+  ]
+}
