@@ -326,12 +326,15 @@ form.contact-form input:focus, form.contact-form textarea:focus{outline:none;bor
 form.contact-form button{
   grid-column:1 / -1;
   justify-self:center;
+  display:flex;align-items:center;justify-content:center;
+  width:50px;height:50px;border-radius:50%;
   background:var(--logo-orange);border:none;color:#fff;
-  font-family:'Mulish',sans-serif;font-size:.95rem;font-weight:600;
-  border-radius:8px;padding:10px 32px;
-  cursor:pointer;margin-top:8px;
+  cursor:pointer;margin-top:8px;padding:0;
   box-shadow:0 2px 8px rgba(0,0,0,.15);
+  transition:transform .15s ease;
 }
+form.contact-form button:hover{transform:scale(1.06);}
+form.contact-form button svg{width:21px;height:21px;}
 
 .copyright-bar{background:var(--gray-bg);text-align:center;padding:14px;margin-top:40px;}
 .copyright-bar span{color:var(--footer-gray);font-size:.85rem;}
