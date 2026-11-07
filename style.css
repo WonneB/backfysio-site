@@ -326,9 +326,11 @@ form.contact-form input:focus, form.contact-form textarea:focus{outline:none;bor
 form.contact-form button{
   grid-column:1 / -1;
   justify-self:center;
-  background:none;border:none;
-  font-family:'Mulish',sans-serif;font-size:.95rem;text-decoration:underline;
+  background:var(--logo-orange);border:none;color:#fff;
+  font-family:'Mulish',sans-serif;font-size:.95rem;font-weight:600;
+  border-radius:8px;padding:10px 32px;
   cursor:pointer;margin-top:8px;
+  box-shadow:0 2px 8px rgba(0,0,0,.15);
 }
 
 .copyright-bar{background:var(--gray-bg);text-align:center;padding:14px;margin-top:40px;}
