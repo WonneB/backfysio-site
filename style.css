@@ -278,8 +278,16 @@ nav.main-nav a.active{color:var(--muted);}
 
 /* pricing table */
 table.tarieven{width:100%;max-width:640px;margin:24px auto;border-collapse:collapse;}
-table.tarieven td{padding:10px 4px;border-bottom:1px solid rgba(0,0,0,.15);font-size:.92rem;}
-table.tarieven td:last-child{text-align:right;font-weight:600;}
+table.tarieven td{padding:10px 4px;border-bottom:1px solid rgba(0,0,0,.15);font-size:.92rem;vertical-align:top;}
+table.tarieven td:first-child{width:68%;}
+table.tarieven td:last-child{text-align:right;font-weight:600;white-space:nowrap;width:32%;}
+
+@media(max-width:600px){
+  table.tarieven, table.tarieven tbody, table.tarieven tr, table.tarieven td{display:block;width:auto;}
+  table.tarieven tr{border-bottom:1px solid rgba(0,0,0,.15);padding-bottom:8px;margin-bottom:8px;}
+  table.tarieven td{padding:2px 4px;border-bottom:none;white-space:normal;}
+  table.tarieven td:last-child{text-align:left;}
+}
 .insurer-list{max-width:640px;margin:16px auto;font-size:.92rem;text-align:left;}
 .insurer-list li{margin-bottom:4px;}
 
@@ -309,7 +317,7 @@ footer.site-footer{background:#fff;padding:48px 0 0;}
 @media(max-width:860px){.footer-grid{grid-template-columns:1fr;}}
 .footer-col p{font-size:.92rem;margin-bottom:.3em;}
 .footer-col .socials{display:flex;align-items:center;gap:10px;margin:14px 0;flex-wrap:wrap;}
-.footer-col .socials img{width:30px;height:30px;}
+.footer-col .socials img{width:30px;height:30px;filter:grayscale(100%);}
 .footer-col .hours{margin-top:16px;font-size:.92rem;}
 
 .map-embed iframe{width:100%;height:220px;border:0;filter:grayscale(.15);}
@@ -327,12 +335,14 @@ form.contact-form button{
   grid-column:1 / -1;
   justify-self:center;
   display:flex;align-items:center;justify-content:center;
-  background:none;border:none;
+  width:50px;height:50px;border-radius:50%;
+  background:var(--logo-orange);border:none;color:#fff;
   cursor:pointer;margin-top:8px;padding:0;
+  box-shadow:0 2px 8px rgba(0,0,0,.15);
   transition:transform .15s ease;
 }
-form.contact-form button:hover{transform:scale(1.04);}
-form.contact-form button img{width:170px;height:auto;display:block;}
+form.contact-form button:hover{transform:scale(1.06);}
+form.contact-form button svg{width:21px;height:21px;}
 
 .copyright-bar{background:var(--gray-bg);text-align:center;padding:14px;margin-top:40px;}
 .copyright-bar span{color:var(--footer-gray);font-size:.85rem;}
