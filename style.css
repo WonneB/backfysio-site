@@ -198,7 +198,10 @@ nav.main-nav a.active{color:var(--muted);}
 .band-col::after{bottom:-2px;}
 
 .band-col img.icon{max-width:150px;margin:0 auto 24px;}
-.band-col h3{font-size:1.9rem;font-weight:400;margin-bottom:18px;}
+.band-col h3{
+  font-size:1.9rem;font-weight:400;margin-bottom:18px;
+  min-height:104px;display:flex;align-items:flex-start;justify-content:center;
+}
 .band-col p{font-size:.9375rem;max-width:280px;margin:0 auto 22px;}
 .band-col .more{font-size:.85rem;text-decoration:underline;text-underline-offset:2px;}
 

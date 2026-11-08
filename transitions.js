@@ -87,6 +87,18 @@
       if (!revealObserver) { el.classList.add('in'); return; }
       revealObserver.observe(el);
     });
+    // Safety net: whatever the reason an element might not have been caught by
+    // the observer (a layout race on first paint, a slow image shifting things
+    // right after the initial check, etc.), nothing should stay invisible
+    // forever. Anything still unrevealed after 2s gets shown unconditionally.
+    setTimeout(function () {
+      els.forEach(function (el) {
+        if (!el.classList.contains('in')) {
+          el.classList.add('in');
+          if (revealObserver) revealObserver.unobserve(el);
+        }
+      });
+    }, 2000);
   }
 
   function isInternalLink(a) {
